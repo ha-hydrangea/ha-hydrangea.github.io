@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Name</title>
+<meta name="description" content="Publications, projects, and experience of Your Name.">
+<meta property="og:title" content="Your Name">
+<meta property="og:description" content="Publications, projects, and experience of Your Name.">
+<meta property="og:type" content="profile">
+<meta property="og:image" content="assets/img/profile.svg">
+<link rel="icon" href="assets/img/favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Your Name",
+  "affiliation": { "@type": "Organization", "name": "Your University" },
+  "email": "mailto:you@example.com",
+  "url": "https://example.github.io/"
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#about">Skip to content</a>
+
+<nav class="site-nav" aria-label="Sections">
+  <a class="site-nav__name" href="#top">Your Name</a>
+  <ul class="site-nav__list">
+    <li><a href="#about">About</a></li>
+    <li><a href="#news">News</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#awards">Awards</a></li>
+  </ul>
+  <button class="theme-toggle" type="button" aria-label="Switch colour theme" aria-pressed="false">
+    <span aria-hidden="true">◑</span>
+  </button>
+</nav>
+
+<main id="top">
+
+  <header class="profile">
+    <div class="section-body" data-section="header"></div>
+  </header>
+
+  <section id="about" aria-labelledby="about-heading">
+    <h2 id="about-heading">About</h2>
+    <div class="section-body" data-section="about"></div>
+  </section>
+
+  <section id="news" aria-labelledby="news-heading">
+    <h2 id="news-heading">News</h2>
+    <div class="section-body news-scroll" data-section="news"></div>
+  </section>
+
+  <section id="publications" aria-labelledby="publications-heading">
+    <h2 id="publications-heading">Publications</h2>
+    <div class="tag-filter" role="group" aria-label="Filter by topic"></div>
+    <div class="section-body" data-section="publications"></div>
+  </section>
+
+  <section id="projects" aria-labelledby="projects-heading">
+    <h2 id="projects-heading">Projects</h2>
+    <div class="section-body" data-section="projects"></div>
+  </section>
+
+  <section id="experience" aria-labelledby="experience-heading">
+    <h2 id="experience-heading">Experience</h2>
+    <div class="section-body" data-section="experience"></div>
+  </section>
+
+  <section id="awards" aria-labelledby="awards-heading">
+    <h2 id="awards-heading">Awards &amp; Education</h2>
+    <div class="section-body" data-section="awards"></div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p><a href="mailto:you@example.com">you@example.com</a> · <a href="assets/cv.pdf">CV</a></p>
+  <p class="site-footer__meta">Last updated 2026</p>
+</footer>
+
+<script type="module" src="js/nav.js"></script>
+<script type="module" src="js/filter.js"></script>
+<script type="module" src="js/render.js"></script>
+</body>
+</html>
