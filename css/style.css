@@ -177,3 +177,30 @@ h2 {
   a { color: #000; text-decoration: none; }
   section { break-inside: avoid; margin-top: 1.5rem; }
 }
+
+.tag-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.tag-button {
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 0.15rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.tag-button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.empty-state { color: var(--text-muted); font-size: 0.9rem; }
+[hidden] { display: none !important; }
