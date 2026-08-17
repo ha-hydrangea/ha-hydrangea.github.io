@@ -58,7 +58,7 @@ function renderHeader(profile) {
 
   const links = el('p', { className: 'profile__links' });
   for (const link of profile.links ?? []) {
-    if (!link.url) continue;
+    if (!link.url || !link.label) continue;
     links.append(el('a', { text: link.label, attrs: { href: link.url, rel: 'noopener' } }));
   }
   if (profile.cv) links.append(el('a', { text: 'CV', attrs: { href: profile.cv } }));
@@ -187,8 +187,13 @@ const AWARD_GROUPS = [
   ['certification', 'Certifications'],
 ];
 
+const AWARD_CATEGORIES = new Set(AWARD_GROUPS.map(([category]) => category));
+
 function renderAwards(items) {
   const frag = document.createDocumentFragment();
+  for (const item of items) {
+    if (!AWARD_CATEGORIES.has(item.category)) console.warn('[render] skipping award entry', item);
+  }
   for (const [category, heading] of AWARD_GROUPS) {
     const inGroup = sortByDateDesc(
       items.filter((item) => item.category === category),
@@ -198,6 +203,7 @@ function renderAwards(items) {
     frag.append(el('h3', { className: 'subhead', text: heading }));
     const list = el('ul', { className: 'award-list' });
     for (const item of inGroup) {
+      if (!item.title) { console.warn('[render] skipping award entry', item); continue; }
       const row = el('li');
       row.append(el('span', { className: 'award__date', text: formatDate(item.date) }));
       const body = el('span', { className: 'award__body' });
