@@ -204,3 +204,10 @@ h2 {
 
 .empty-state { color: var(--text-muted); font-size: 0.9rem; }
 [hidden] { display: none !important; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+section[id] { scroll-margin-top: 4.5rem; }
