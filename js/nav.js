@@ -9,8 +9,15 @@ function applyTheme(theme) {
   } else {
     root.removeAttribute('data-theme');
   }
+  // aria-pressed must describe what is actually rendering, not what is stored.
+  // With no explicit preference we deliberately leave data-theme absent so the CSS
+  // media query keeps following the OS live — but the toggle must still announce
+  // "dark" in that case, or a screen reader is told the opposite of what is on screen.
+  const effective = (theme === 'light' || theme === 'dark')
+    ? theme
+    : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   const toggle = document.querySelector('.theme-toggle');
-  toggle?.setAttribute('aria-pressed', String(theme === 'dark'));
+  toggle?.setAttribute('aria-pressed', String(effective === 'dark'));
 }
 
 function currentTheme() {
