@@ -1,0 +1,10 @@
+{
+  "name": "personal-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "validate": "node tools/validate.js",
+    "serve": "npx --yes serve ."
+  }
+}
