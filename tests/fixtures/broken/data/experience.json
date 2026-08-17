@@ -1,0 +1,9 @@
+[{
+  "org": "Example Lab",
+  "logo": "assets/img/x.png",
+  "role": "Research Intern",
+  "period": { "start": "2024-06", "end": "2024-12" },
+  "location": "Seoul, Korea",
+  "bullets": ["Did research."],
+  "tags": []
+}]

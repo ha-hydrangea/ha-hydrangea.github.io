@@ -1,0 +1,11 @@
+[{
+  "title": "A Project",
+  "period": { "start": "2025-03", "end": null },
+  "role": "Author",
+  "summary": "One line.",
+  "description": ["Did a thing."],
+  "stack": ["Python"],
+  "tags": ["vision"],
+  "links": { "repo": "https://github.com/example/repo", "demo": "", "doc": "" },
+  "image": "assets/img/x.png"
+}]

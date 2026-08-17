@@ -1,0 +1,10 @@
+{
+  "name": "Test Owner",
+  "headline": "M.S. Student in Computer Science",
+  "affiliation": "Example University",
+  "email": "owner@example.com",
+  "photo": "assets/img/missing.png",
+  "cv": "assets/cv.pdf",
+  "bio": "",
+  "links": [{ "label": "GitHub", "url": "github.com/example", "icon": "github" }]
+}

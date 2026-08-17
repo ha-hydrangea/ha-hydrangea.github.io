@@ -1,0 +1,11 @@
+[{
+  "title": "A Paper",
+  "authors": ["T. Owner*", "C. Author"],
+  "me": "T. Owner",
+  "venue": "ICLR",
+  "year": 2026,
+  "type": "conference",
+  "highlight": "Oral",
+  "tags": ["vision"],
+  "links": { "paper": "https://example.com/paper", "code": "", "project": "" }
+}]
