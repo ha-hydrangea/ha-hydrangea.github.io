@@ -1,0 +1,39 @@
+[
+  {
+    "title": "Streaming Retrieval for Long-Context Language Models",
+    "authors": ["Your Name*", "A. Collaborator*", "B. Advisor"],
+    "me": "Your Name",
+    "venue": "NeurIPS",
+    "year": 2026,
+    "type": "conference",
+    "highlight": "Spotlight",
+    "tags": ["retrieval", "efficiency"],
+    "links": {
+      "paper": "https://arxiv.org/abs/0000.00000",
+      "code": "https://github.com/yourname/streaming-retrieval",
+      "project": ""
+    }
+  },
+  {
+    "title": "On the Cost of Deduplicating Web-Scale Corpora",
+    "authors": ["C. Coauthor", "Your Name"],
+    "me": "Your Name",
+    "venue": "arXiv",
+    "year": 2026,
+    "type": "preprint",
+    "highlight": null,
+    "tags": ["data"],
+    "links": { "paper": "https://arxiv.org/abs/0000.00001", "code": "", "project": "" }
+  },
+  {
+    "title": "A Cache-Aware Scheduler for Mixed Inference Workloads",
+    "authors": ["Your Name", "B. Advisor"],
+    "me": "Your Name",
+    "venue": "EuroSys",
+    "year": 2025,
+    "type": "conference",
+    "highlight": null,
+    "tags": ["systems", "efficiency"],
+    "links": { "paper": "https://example.com/eurosys", "code": "", "project": "" }
+  }
+]

@@ -1,0 +1,7 @@
+[
+  { "category": "award", "title": "Example Foundation Graduate Fellowship", "issuer": "Example Foundation", "date": "2025-11", "detail": "Awarded to 12 students nationally.", "url": null },
+  { "category": "award", "title": "Best Undergraduate Thesis", "issuer": "Your University", "date": "2024-02", "detail": "", "url": null },
+  { "category": "certification", "title": "AWS Certified Solutions Architect - Associate", "issuer": "Amazon Web Services", "date": "2024-09", "detail": "", "url": "https://example.com/cert" },
+  { "category": "education", "title": "M.S. in Computer Science", "issuer": "Your University", "date": "2025-03", "detail": "Advisor: B. Advisor. Expected 2027.", "url": null },
+  { "category": "education", "title": "B.S. in Computer Science", "issuer": "Your University", "date": "2021-03", "detail": "Graduated with honours.", "url": null }
+]

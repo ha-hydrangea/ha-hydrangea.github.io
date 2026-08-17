@@ -1,0 +1,34 @@
+[
+  {
+    "org": "Example Lab",
+    "logo": "assets/img/logo-lab.svg",
+    "role": "Research Intern",
+    "period": { "start": "2026-03", "end": null },
+    "location": "Seoul, Korea",
+    "bullets": [
+      "Working on retrieval for long-context models under Prof. B. Advisor.",
+      "Built the evaluation harness now used across the group."
+    ],
+    "tags": ["retrieval"]
+  },
+  {
+    "org": "Your University",
+    "logo": "assets/img/logo-univ.svg",
+    "role": "Teaching Assistant, Operating Systems",
+    "period": { "start": "2025-03", "end": "2025-12" },
+    "location": "Seoul, Korea",
+    "bullets": [
+      "Ran weekly labs for 90 students and rewrote two of the four assignments."
+    ],
+    "tags": ["systems"]
+  },
+  {
+    "org": "Example Logistics",
+    "logo": "",
+    "role": "Backend Engineer (Intern)",
+    "period": { "start": "2024-06", "end": "2024-08" },
+    "location": "Remote",
+    "bullets": ["Cut nightly batch runtime from 6 hours to 40 minutes."],
+    "tags": ["data"]
+  }
+]

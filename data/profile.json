@@ -1,0 +1,15 @@
+{
+  "name": "Your Name",
+  "headline": "M.S. Student in Computer Science",
+  "affiliation": "Your University",
+  "email": "you@example.com",
+  "photo": "assets/img/profile.svg",
+  "cv": "assets/cv.pdf",
+  "bio": "I work on systems that learn from messy real-world data. My current focus is on making large models cheap enough to run where the data already lives. Before graduate school I built data pipelines for a logistics startup.",
+  "links": [
+    { "label": "GitHub", "url": "https://github.com/yourname", "icon": "github" },
+    { "label": "Google Scholar", "url": "https://scholar.google.com/citations?user=example", "icon": "scholar" },
+    { "label": "LinkedIn", "url": "https://linkedin.com/in/yourname", "icon": "linkedin" },
+    { "label": "Email", "url": "mailto:you@example.com", "icon": "mail" }
+  ]
+}

@@ -1,0 +1,6 @@
+[
+  { "date": "2026-07", "text": "Our paper on streaming retrieval was accepted to NeurIPS 2026.", "url": "https://example.com/neurips" },
+  { "date": "2026-03", "text": "Started as a research intern at Example Lab.", "url": null },
+  { "date": "2025-11", "text": "Received the Example Foundation Graduate Fellowship.", "url": null },
+  { "date": "2025-06", "text": "Released an open-source toolkit for dataset deduplication.", "url": "https://github.com/yourname/dedupe" }
+]

@@ -1,0 +1,41 @@
+[
+  {
+    "title": "dedupe",
+    "period": { "start": "2025-06", "end": null },
+    "role": "Author and maintainer",
+    "summary": "A streaming near-duplicate detector for text corpora.",
+    "description": [
+      "Processes 1 TB of text on a single machine using a rolling MinHash index.",
+      "Ships a CLI and a Python API; used by three external research groups."
+    ],
+    "stack": ["Python", "Rust", "PyArrow"],
+    "tags": ["data", "efficiency"],
+    "links": { "repo": "https://github.com/yourname/dedupe", "demo": "", "doc": "https://example.com/dedupe-docs" },
+    "image": "assets/img/proj-a.svg"
+  },
+  {
+    "title": "Campus Transit Dashboard",
+    "period": { "start": "2024-09", "end": "2025-02" },
+    "role": "Frontend lead",
+    "summary": "Live arrival board for the university shuttle network.",
+    "description": [
+      "Built the realtime map and the accessibility-first schedule table.",
+      "Handled roughly 4,000 daily users during the semester."
+    ],
+    "stack": ["TypeScript", "Leaflet"],
+    "tags": ["systems"],
+    "links": { "repo": "https://github.com/yourname/transit", "demo": "https://example.com/transit", "doc": "" },
+    "image": "assets/img/proj-b.svg"
+  },
+  {
+    "title": "Paper Reading Notes",
+    "period": { "start": "2024-01", "end": null },
+    "role": "Author",
+    "summary": "Public notes on roughly 120 papers in retrieval and efficiency.",
+    "description": ["Updated most weeks; used as the reading list for a lab seminar."],
+    "stack": ["Markdown"],
+    "tags": ["retrieval"],
+    "links": { "repo": "https://github.com/yourname/notes", "demo": "", "doc": "" },
+    "image": ""
+  }
+]
