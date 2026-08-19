@@ -228,6 +228,10 @@ section[id] { scroll-margin-top: 4.5rem; }
   flex: none;
   background: var(--bg-raised);
 }
+/* Flex child holding the header text. min-width:0 is load-bearing: without it a
+   flex item's min-width resolves to its longest unbreakable token, so one long
+   word in a name or affiliation overflows the page instead of wrapping. */
+.profile__text { flex: 1; min-width: 0; }
 .profile__name {
   font-family: var(--font-serif);
   font-size: 2rem;
