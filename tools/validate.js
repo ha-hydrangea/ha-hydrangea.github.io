@@ -12,15 +12,25 @@ const RULES = {
   'profile.json': {
     kind: 'object',
     required: ['name', 'headline', 'affiliation', 'email', 'bio'],
+    arrays: ['links'],
   },
   'news.json': { kind: 'array', required: ['date', 'text'] },
   'publications.json': {
     kind: 'array',
     required: ['title', 'authors', 'me', 'venue', 'year', 'type'],
+    arrays: ['authors', 'tags'],
     enums: { type: ['conference', 'journal', 'preprint', 'patent'] },
   },
-  'projects.json': { kind: 'array', required: ['title', 'period.start', 'summary'] },
-  'experience.json': { kind: 'array', required: ['org', 'role', 'period.start'] },
+  'projects.json': {
+    kind: 'array',
+    required: ['title', 'period.start', 'summary'],
+    arrays: ['description', 'stack', 'tags'],
+  },
+  'experience.json': {
+    kind: 'array',
+    required: ['org', 'role', 'period.start'],
+    arrays: ['bullets', 'tags'],
+  },
   'awards.json': {
     kind: 'array',
     required: ['category', 'title', 'date'],
@@ -40,6 +50,14 @@ function isEmpty(value) {
   if (typeof value === 'string') return value.trim() === '';
   if (Array.isArray(value)) return value.length === 0;
   return false;
+}
+
+/** Names a wrong-typed value in an error message without dumping a whole object. */
+function describeType(value) {
+  if (Array.isArray(value)) return 'an array';
+  if (value === null) return 'null';
+  if (typeof value === 'object') return 'an object';
+  return `${typeof value} ${JSON.stringify(value)}`;
 }
 
 function stripStar(name) {
@@ -130,7 +148,9 @@ export async function validate(dataDir, options = {}) {
     }
 
     const entries = isArray ? parsed : [parsed];
-    tagsByFile[file] = entries.flatMap((entry) => entry?.tags ?? []);
+    // Only real tag arrays feed the typo check; a mistyped scalar is reported by the
+    // array-type rule instead of being compared as if it were a tag.
+    tagsByFile[file] = entries.flatMap((entry) => (Array.isArray(entry?.tags) ? entry.tags : []));
 
     for (const [index, entry] of entries.entries()) {
       const label = isArray ? `entry ${index}` : 'object';
@@ -138,6 +158,18 @@ export async function validate(dataDir, options = {}) {
       for (const field of rule.required) {
         if (isEmpty(pluck(entry, field))) {
           errors.push(`${file} ${label}: required field "${field}" is missing or empty`);
+        }
+      }
+
+      // A scalar where the renderer expects a list is the mistake that costs a whole
+      // section: "tags": "vision" makes .join throw, "description": "one line" makes
+      // the loop walk characters. Catch it here, in words, before it reaches a page.
+      for (const field of rule.arrays ?? []) {
+        const value = pluck(entry, field);
+        if (value !== undefined && value !== null && !Array.isArray(value)) {
+          errors.push(
+            `${file} ${label}: "${field}" must be an array, got ${describeType(value)}`,
+          );
         }
       }
 
@@ -153,8 +185,11 @@ export async function validate(dataDir, options = {}) {
       checkDates(entry, file, label, errors);
 
       if (file === 'publications.json' && entry?.me) {
-        const authors = (entry.authors ?? []).map(stripStar);
-        if (!authors.includes(stripStar(entry.me))) {
+        const authors = entry.authors ?? [];
+        // Array.isArray is load-bearing: a string here used to reach .map and throw a
+        // raw TypeError that killed the whole run. A non-array is already reported by
+        // the array-type check above, so one mistake still costs exactly one error.
+        if (Array.isArray(authors) && !authors.map(stripStar).includes(stripStar(entry.me))) {
           errors.push(`${file} ${label}: me "${entry.me}" does not appear in authors`);
         }
       }
@@ -167,7 +202,12 @@ export async function validate(dataDir, options = {}) {
           );
         }
       }
-      for (const asset of assets) {
+      // Any value under assets/ must exist on disk, not just the dedicated asset
+      // fields — "links": { "paper": "assets/paper.pdf" } is an ordinary thing to
+      // write, and a link the validator blesses must not 404. The Set keeps an
+      // asset field, which is collected as both, to a single report.
+      const onDisk = new Set([...assets, ...links.filter((link) => /^assets\//.test(link))]);
+      for (const asset of onDisk) {
         if (!(await assetExists(asset))) {
           errors.push(`${file} ${label}: asset "${asset}" does not exist on disk`);
         }

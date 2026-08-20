@@ -8,4 +8,14 @@
   "highlight": null,
   "tags": ["vision", "visoin"],
   "links": { "paper": "https://example.com/paper" }
+}, {
+  "title": "A Second Paper",
+  "authors": "T. Owner",
+  "me": "T. Owner",
+  "venue": "NeurIPS",
+  "year": 2025,
+  "type": "conference",
+  "highlight": null,
+  "tags": "vision",
+  "links": { "paper": "assets/missing-paper.pdf" }
 }]
