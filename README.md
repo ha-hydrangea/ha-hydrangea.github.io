@@ -1,5 +1,7 @@
 # Personal Site
 
+Live at <https://ha-hydrangea.github.io/>
+
 Static résumé site. No build step, no dependencies.
 Content lives in `data/*.json`; the page renders it at load time.
 
