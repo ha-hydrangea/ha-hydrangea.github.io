@@ -20,7 +20,9 @@
 - **Language: English only.** All user-visible copy in the HTML and JSON is English.
 - **Dates are strings** matching `^\d{4}(-\d{2})?$`. Never construct a `Date` object from résumé data.
 - **`period.end: null` renders as `"Present"`.**
-- Sorting is the renderer's responsibility. JSON array order carries no meaning.
+- Sorting is the renderer's responsibility. JSON array order carries no meaning —
+  **except within a publication year**, where file order is preserved deliberately
+  (a publication carries only a year, so there is nothing finer to sort on).
 - Tag vocabulary is derived from the data. Never introduce a separate tag list file.
 - One failing section must never blank the page: use `Promise.allSettled` and per-entry skipping.
 - Local preview is `npx serve .` — `file://` will not work because of `fetch` CORS.

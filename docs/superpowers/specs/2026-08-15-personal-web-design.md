@@ -155,7 +155,10 @@ Shared conventions:
 
 - Dates are strings: `"2026"` or `"2026-08"`. No `Date` objects, no timezones.
 - `period.end: null` renders as `"Present"`.
-- Sorting is the renderer's job (newest first). Array order in the JSON is irrelevant.
+- Sorting is the renderer's job (newest first). Array order in the JSON is irrelevant,
+  **except within a publication year**: publications are grouped by year, and entries
+  inside one year keep their file order (a publication carries only a year, so there
+  is nothing finer to sort on).
 - Empty-string or missing link values are omitted from the rendered output.
 - Tag vocabulary is **derived** from the data, never maintained in a separate file.
 
