@@ -48,7 +48,7 @@ function renderHeader(profile) {
   if (profile.photo) {
     frag.append(el('img', {
       className: 'profile__photo',
-      attrs: { src: profile.photo, alt: '', width: '160', height: '160' },
+      attrs: { src: profile.photo, alt: '', width: '640', height: '800' },
     }));
   }
   const body = el('div', { className: 'profile__text' });

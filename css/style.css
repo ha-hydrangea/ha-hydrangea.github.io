@@ -222,8 +222,8 @@ section[id] { scroll-margin-top: 4.5rem; }
 }
 .profile__photo {
   width: 140px;
-  height: 140px;
-  border-radius: 50%;
+  height: 175px;            /* 4:5 — the photo's own proportions, so nothing is cropped */
+  border-radius: var(--radius);
   object-fit: cover;
   flex: none;
   background: var(--bg-raised);
@@ -344,7 +344,7 @@ section[id] { scroll-margin-top: 4.5rem; }
 
 @media (max-width: 720px) {
   .profile .section-body { flex-direction: column; align-items: flex-start; text-align: left; }
-  .profile__photo { width: 96px; height: 96px; }
+  .profile__photo { width: 108px; height: 135px; }
   .card-grid { grid-template-columns: 1fr; }
   .news li, .award-list li { flex-direction: column; gap: 0.1rem; }
   .news__date, .award__date { width: auto; }
