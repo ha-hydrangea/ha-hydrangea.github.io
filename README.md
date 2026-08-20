@@ -100,7 +100,11 @@ GitHub Pages redeploys automatically.
 ## Conventions
 
 - Dates are `"2026"` or `"2026-01"`. Nothing else validates.
-- Array order does not matter — everything is sorted newest-first at render time.
+- Array order does not matter for news, projects, experience, and awards — those are
+  sorted by date at render time. **Publications are different:** they are grouped by
+  year with the newest year first, but entries *within* the same year keep the order
+  they have in the file (a publication carries only a year, so there is nothing finer
+  to sort on). Arrange same-year papers the way you want them to appear.
 - Leave a link empty (`""`) and it simply will not appear.
 - Tags are collected automatically from the data; there is no tag list to maintain.
   The validator warns when two tags look like typos of each other.
