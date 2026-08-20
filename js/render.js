@@ -16,6 +16,15 @@ function el(tag, { className, text, attrs, html } = {}) {
   return node;
 }
 
+/**
+ * Array-valued fields are hand-edited JSON, so a scalar can turn up where a list
+ * belongs. Iterating a string would emit one node per character and calling .join
+ * on it would throw and cost the whole section; treat anything else as no items.
+ */
+function asArray(value) {
+  return Array.isArray(value) ? value : [];
+}
+
 function linkChips(links) {
   const wrap = el('span', { className: 'chips' });
   for (const [label, url] of Object.entries(links ?? {})) {
@@ -26,7 +35,7 @@ function linkChips(links) {
 }
 
 function tagAttr(item) {
-  return (item.tags ?? []).join(' ');
+  return asArray(item.tags).join(' ');
 }
 
 function mount(name, fragment) {
@@ -57,7 +66,7 @@ function renderHeader(profile) {
   body.append(el('p', { className: 'profile__affiliation', text: profile.affiliation }));
 
   const links = el('p', { className: 'profile__links' });
-  for (const link of profile.links ?? []) {
+  for (const link of asArray(profile.links)) {
     if (!link.url || !link.label) continue;
     links.append(el('a', { text: link.label, attrs: { href: link.url, rel: 'noopener' } }));
   }
@@ -65,6 +74,21 @@ function renderHeader(profile) {
   body.append(links);
 
   frag.append(body);
+  return frag;
+}
+
+/** The footer contact line. Same source as the header, so the two cannot disagree. */
+function renderFooter(profile) {
+  const line = el('p');
+  if (profile.email) {
+    line.append(el('a', { text: profile.email, attrs: { href: `mailto:${profile.email}` } }));
+  }
+  if (profile.cv) {
+    if (line.childNodes.length > 0) line.append(document.createTextNode(' · '));
+    line.append(el('a', { text: 'CV', attrs: { href: profile.cv } }));
+  }
+  const frag = document.createDocumentFragment();
+  frag.append(line);
   return frag;
 }
 
@@ -90,14 +114,27 @@ function renderNews(items) {
   return frag;
 }
 
+/** The validator's required list for publications.json, enforced again at render time. */
+function usablePublication(pub) {
+  const ok = pub.title && asArray(pub.authors).length > 0
+    && pub.me && pub.venue && pub.year && pub.type;
+  if (!ok) console.warn('[render] skipping publication', pub);
+  return Boolean(ok);
+}
+
 function renderPublications(items) {
   const frag = document.createDocumentFragment();
-  for (const group of groupPublicationsByYear(items)) {
+  // Filtered before grouping, not inside the loop: a publication with no year would
+  // otherwise open a bucket keyed NaN and print a literal "NaN" year heading.
+  for (const group of groupPublicationsByYear(items.filter(usablePublication))) {
     frag.append(el('h3', { className: 'year', text: String(group.year) }));
     const list = el('ul', { className: 'pub-list' });
     for (const pub of group.items) {
-      if (!pub.title) { console.warn('[render] skipping publication', pub); continue; }
-      const row = el('li', { className: 'pub', attrs: { 'data-tags': tagAttr(pub) } });
+      const row = el('li', { className: 'pub' });
+      // Set directly, not through el()'s attrs: el() skips empty values (correct for
+      // href), but an untagged entry with no data-tags is invisible to filter.js and
+      // would stay on screen under every filter while the counter ignored it.
+      row.dataset.tags = tagAttr(pub);
       row.append(el('span', { className: 'pub__title', text: pub.title }));
 
       const authors = el('span', { className: 'pub__authors' });
@@ -124,8 +161,11 @@ function renderPublications(items) {
 function renderProjects(items) {
   const grid = el('div', { className: 'card-grid' });
   for (const project of sortByDateDesc(items, (entry) => entry.period?.start)) {
-    if (!project.title) { console.warn('[render] skipping project', project); continue; }
-    const card = el('article', { className: 'card', attrs: { 'data-tags': tagAttr(project) } });
+    if (!project.title || !project.period?.start || !project.summary) {
+      console.warn('[render] skipping project', project); continue;
+    }
+    const card = el('article', { className: 'card' });
+    card.dataset.tags = tagAttr(project);   // unconditional — see renderPublications
     if (project.image) {
       card.append(el('img', {
         className: 'card__image',
@@ -134,16 +174,18 @@ function renderProjects(items) {
     }
     card.append(el('h3', { className: 'card__title', text: project.title }));
     card.append(el('p', { className: 'card__period', text: formatPeriod(project.period) }));
+    if (project.role) card.append(el('p', { className: 'card__role', text: project.role }));
     card.append(el('p', { className: 'card__summary', text: project.summary }));
 
-    if (project.description?.length) {
+    const description = asArray(project.description);
+    if (description.length > 0) {
       const bullets = el('ul', { className: 'card__bullets' });
-      for (const line of project.description) bullets.append(el('li', { text: line }));
+      for (const line of description) bullets.append(el('li', { text: line }));
       card.append(bullets);
     }
 
     const stack = el('p', { className: 'stack' });
-    for (const item of project.stack ?? []) stack.append(el('span', { className: 'chip chip--muted', text: item }));
+    for (const item of asArray(project.stack)) stack.append(el('span', { className: 'chip chip--muted', text: item }));
     card.append(stack);
     card.append(linkChips(project.links));
     grid.append(card);
@@ -156,7 +198,9 @@ function renderProjects(items) {
 function renderExperience(items) {
   const list = el('ul', { className: 'exp-list' });
   for (const job of sortByDateDesc(items, (entry) => entry.period?.start)) {
-    if (!job.org || !job.role) { console.warn('[render] skipping experience entry', job); continue; }
+    if (!job.org || !job.role || !job.period?.start) {
+      console.warn('[render] skipping experience entry', job); continue;
+    }
     const row = el('li', { className: 'exp' });
     if (job.logo) {
       row.append(el('img', {
@@ -168,9 +212,10 @@ function renderExperience(items) {
     body.append(el('h3', { className: 'exp__role', text: job.role }));
     body.append(el('p', { className: 'exp__org', text: [job.org, job.location].filter(Boolean).join(' · ') }));
     body.append(el('p', { className: 'exp__period', text: formatPeriod(job.period) }));
-    if (job.bullets?.length) {
+    const lines = asArray(job.bullets);
+    if (lines.length > 0) {
       const bullets = el('ul');
-      for (const line of job.bullets) bullets.append(el('li', { text: line }));
+      for (const line of lines) bullets.append(el('li', { text: line }));
       body.append(bullets);
     }
     row.append(body);
@@ -189,21 +234,25 @@ const AWARD_GROUPS = [
 
 const AWARD_CATEGORIES = new Set(AWARD_GROUPS.map(([category]) => category));
 
+/** The validator's required list for awards.json, enforced again at render time. */
+function usableAward(item) {
+  const ok = AWARD_CATEGORIES.has(item.category) && item.title && item.date;
+  if (!ok) console.warn('[render] skipping award entry', item);
+  return Boolean(ok);
+}
+
 function renderAwards(items) {
   const frag = document.createDocumentFragment();
-  for (const item of items) {
-    if (!AWARD_CATEGORIES.has(item.category)) console.warn('[render] skipping award entry', item);
-  }
+  const usable = items.filter(usableAward);
   for (const [category, heading] of AWARD_GROUPS) {
     const inGroup = sortByDateDesc(
-      items.filter((item) => item.category === category),
+      usable.filter((item) => item.category === category),
       (entry) => entry.date,
     );
     if (inGroup.length === 0) continue;
     frag.append(el('h3', { className: 'subhead', text: heading }));
     const list = el('ul', { className: 'award-list' });
     for (const item of inGroup) {
-      if (!item.title) { console.warn('[render] skipping award entry', item); continue; }
       const row = el('li');
       row.append(el('span', { className: 'award__date', text: formatDate(item.date) }));
       const body = el('span', { className: 'award__body' });
@@ -243,7 +292,21 @@ export async function loadData() {
   return data;
 }
 
+/**
+ * The chrome outside the section mounts: the browser tab and the nav's name link.
+ * The static values in index.html stay as they are — crawlers and link-preview
+ * scrapers do not reliably run JavaScript — so README documents them as manual.
+ */
+function applyChrome(profile) {
+  if (!profile?.name) return;
+  document.title = profile.name;
+  const navName = document.querySelector('.site-nav__name');
+  if (navName) navName.textContent = profile.name;
+}
+
 function renderAll(data) {
+  applyChrome(data.profile);
+
   const sections = [
     ['header', data.profile, renderHeader],
     ['about', data.profile, renderAbout],
@@ -252,6 +315,9 @@ function renderAll(data) {
     ['projects', data.projects, renderProjects],
     ['experience', data.experience, renderExperience],
     ['awards', data.awards, renderAwards],
+    // The footer mount has no <section>/<header> ancestor, so a failure here leaves
+    // the contact line empty and warns; the static "Last updated" line survives.
+    ['footer', data.profile, renderFooter],
   ];
 
   for (const [name, payload, renderer] of sections) {

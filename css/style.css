@@ -12,7 +12,10 @@
   --accent: #1d4ed8;
   --accent-soft: #dbe4fb;
 
+  /* The page's column, defined once. The nav, main, and the footer all use both
+     halves — measure and gutter — so their content edges cannot drift apart. */
   --measure: 820px;
+  --gutter: 1.25rem;
   --gap: 1.5rem;
   --radius: 6px;
 }
@@ -73,17 +76,26 @@ a:focus-visible, button:focus-visible {
 
 /* ---- Navigation ---- */
 
+/* The bar itself is full-bleed: only sticky, background, and border live here. */
 .site-nav {
   position: sticky;
   top: 0;
   z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: var(--gap);
-  padding: 0.6rem max(1rem, calc((100vw - var(--measure)) / 2));
   background: color-mix(in srgb, var(--bg) 88%, transparent);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
+}
+
+/* The column. Same max-width and inline padding as main, so the nav's contents sit
+   on the same edges as the headings below — a 100vw calc could not, because 100vw
+   includes the classic scrollbar that main's auto margins do not. */
+.site-nav__inner {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0.6rem var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
 }
 
 .site-nav__name {
@@ -129,7 +141,7 @@ a:focus-visible, button:focus-visible {
 main {
   max-width: var(--measure);
   margin: 0 auto;
-  padding: 2.5rem max(1rem, 1.25rem) 4rem;
+  padding: 2.5rem var(--gutter) 4rem;
 }
 
 section { margin-top: 3rem; }
@@ -153,7 +165,7 @@ h2 {
 .site-footer {
   max-width: var(--measure);
   margin: 0 auto;
-  padding: 2rem 1.25rem 3rem;
+  padding: 2rem var(--gutter) 3rem;
   border-top: 1px solid var(--border);
   color: var(--text-muted);
   font-size: 0.9rem;
@@ -163,7 +175,7 @@ h2 {
 /* ---- Responsive ---- */
 
 @media (max-width: 720px) {
-  .site-nav { gap: 0.75rem; }
+  .site-nav__inner { gap: 0.75rem; }
   .site-nav__name { display: none; }
   main { padding-top: 1.5rem; }
 }
@@ -311,6 +323,7 @@ section[id] { scroll-margin-top: 4.5rem; }
 }
 .card__title { font-family: var(--font-serif); font-size: 1.05rem; margin: 0 0 0.15rem; }
 .card__period { margin: 0; font-size: 0.82rem; color: var(--text-muted); }
+.card__role { margin: 0; font-size: 0.85rem; }
 .card__summary { margin: 0.4rem 0; }
 .card__bullets { margin: 0.4rem 0; padding-left: 1.1rem; font-size: 0.9rem; }
 .stack { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.5rem 0 0.3rem; }

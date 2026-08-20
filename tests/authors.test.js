@@ -28,3 +28,9 @@ test('splitAuthors flags nobody when me is missing', () => {
 test('splitAuthors returns an empty array for a missing author list', () => {
   assert.deepEqual(splitAuthors(undefined, 'A. Kim'), []);
 });
+
+test('splitAuthors yields no authors when the list is a string instead of an array', () => {
+  // "authors": "T. Owner" is a plausible hand-edit; it must not throw and take the
+  // whole publications section down with it.
+  assert.deepEqual(splitAuthors('T. Owner', 'T. Owner'), []);
+});
